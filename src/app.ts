@@ -1,4 +1,4 @@
-import { Collection, Events } from 'discord.js';
+import { Events } from 'discord.js';
 
 import { handleButton } from './button-handler.js';
 import { client } from './client.js';

@@ -6,9 +6,7 @@ import { extendedClient } from './extended-client.js';
 const baseClient: Client<true> = new Client({
     intents: [
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.MessageContent
     ],
     partials: [
         Partials.Message,
