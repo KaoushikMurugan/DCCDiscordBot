@@ -1,0 +1,29 @@
+{
+  "name": "dccdiscordbot",
+  "version": "1.0.0",
+  "description": "Discord Bot for Davis Cube Club",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaoushikMurugan/DCCDiscordBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaoushikMurugan/DCCDiscordBot/issues"
+  },
+  "homepage": "https://github.com/KaoushikMurugan/DCCDiscordBot#readme",
+  "dependencies": {
+    "discord-api-types": "^0.37.68",
+    "discord.js": "^14.14.1"
+  },
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
