@@ -11,11 +11,9 @@ client.on(Events.ClientReady, async () => {
     client.deployCommands();
 });
 
-client.on(Events.MessageCreate, async (message) => {
+client.on(Events.MessageCreate, async message => {});
 
-});
-
-client.on(Events.InteractionCreate, async (interaction) => {
+client.on(Events.InteractionCreate, async interaction => {
     if (interaction.isButton()) {
         handleButton(interaction);
     }
@@ -34,13 +32,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 });
 
-client.on(Events.GuildCreate, (guild) => {
-    
-});
+client.on(Events.GuildCreate, guild => {});
 
-client.on(Events.GuildDelete, (guild) => {
-
-});
+client.on(Events.GuildDelete, guild => {});
 
 client
     .login(bot_creds.token)

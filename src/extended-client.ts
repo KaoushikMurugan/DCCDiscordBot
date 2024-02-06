@@ -16,7 +16,7 @@ class extendedClient extends Client<true> {
         const commandsPath = path.join(_src_dirname, './commands');
         const commandFiles = fs
             .readdirSync(commandsPath)
-            .filter((file) => file.endsWith('.js'));
+            .filter(file => file.endsWith('.js'));
 
         for (const file of commandFiles) {
             const filePath = path.join(commandsPath, file);
@@ -57,4 +57,3 @@ class extendedClient extends Client<true> {
 }
 
 export { extendedClient };
-
