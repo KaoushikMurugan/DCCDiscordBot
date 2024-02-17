@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/KaoushikMurugan/DCCDiscordBot#readme",
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.0",
+    "axios": "^1.6.7",
     "cubing": "^0.47.1",
     "discord-api-types": "^0.37.68",
     "discord.js": "^14.14.1"
