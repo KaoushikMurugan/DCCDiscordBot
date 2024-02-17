@@ -13,7 +13,7 @@ export default {
 
         const scramble = (await randomScrambleForEvent("333")).toString();
 
-        const response = await axios.get(`https://puzzle-generator.robiningelbrecht.be/cube?cube[case]=${scramble}`, { responseType: 'arraybuffer' })
+        const response = await axios.get(`https://puzzle-generator.robiningelbrecht.be/cube?cube[algorithm]=${scramble}`, { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
         const resvg = new Resvg(buffer)
         const pngData = resvg.render()
