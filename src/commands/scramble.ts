@@ -1,28 +1,56 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, AttachmentBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } from 'discord.js';
 
-import { randomScrambleForEvent } from "cubing/scramble";
 import { commandData } from '../utilities.js';
-import axios from 'axios';
 import { Resvg } from '@resvg/resvg-js';
+import cstimer from 'cstimer_module'
+import cstimerEvents from '../constants/cstimer-events.js'
 
+const wcaCategory = cstimerEvents.find(([category]) => category === 'WCA')!;
+const wcaEvents = wcaCategory[1]
+const eventChoices: { name: string; value: string; }[] = 
+    wcaEvents.map(event => ({
+        name: event[0],
+        value: event[1]
+    })).filter(event => event.value !== 'r3ni');;
 
 export default {
-    data: new SlashCommandBuilder().setName('scramble').setDescription('Scramble!'),
+    data: new SlashCommandBuilder()
+        .setName('scramble')
+        .setDescription('Scramble!')
+        .addStringOption(option => option.setName('event')
+            .setDescription('Which Event?')
+            .setRequired(true)
+            .addChoices(...eventChoices)
+        ),
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.deferReply();
 
-        const scramble = (await randomScrambleForEvent("333")).toString();
+        const eventID: string | null = interaction.options.getString('event');
+        if (!eventID) { interaction.editReply("No event received"); return; }
 
-        const response = await axios.get(`https://puzzle-generator.robiningelbrecht.be/cube?cube[algorithm]=${scramble}`, { responseType: 'arraybuffer' })
-        const buffer = Buffer.from(response.data, "utf-8")
+        const eventInfo: [string, string, number] | undefined = wcaEvents.find(event => event[1] === eventID);
+        if (!eventInfo) { interaction.editReply("Event not supported"); return; }
+
+        // generate scramble
+        var scramble = cstimer.getScramble(eventInfo[1], eventInfo[2]);
+
+        // generate scramble image
+        var scrambleImage = cstimer.getImage(scramble, eventInfo[1]);
+
+        // convert image to png
+        const buffer = Buffer.from(scrambleImage, "utf-8")
         const resvg = new Resvg(buffer)
         const pngData = resvg.render()
         const pngBuffer = pngData.asPng()
         const attachment = new AttachmentBuilder(pngBuffer, { name: 'scramble-image.png' });
 
+        const scrambleEmbed = new EmbedBuilder()
+	        .setColor(22851)
+            .addFields({ name: `${eventInfo[0]} Scramble`, value: scramble})
+            .setImage(`attachment://${attachment.name}`)
+
         await interaction.editReply({ 
-            content: `scramble ${scramble}`,
-            files: [attachment] 
+            embeds: [scrambleEmbed], files: [attachment]
         });
     }
 } as commandData;
