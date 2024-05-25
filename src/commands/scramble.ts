@@ -4,6 +4,8 @@ import { commandData } from '../utilities.js';
 import { Resvg } from '@resvg/resvg-js';
 import cstimer from 'cstimer_module'
 import cstimerEvents from '../constants/cstimer-events.js'
+import { davisGold } from '../constants/bot-config.js';
+import { CstimerEvent } from '../custom-types.js';
 
 const wcaCategory = cstimerEvents.find(([category]) => category === 'WCA')!;
 const wcaEvents = wcaCategory[1]
@@ -11,14 +13,14 @@ const eventChoices: { name: string; value: string; }[] =
     wcaEvents.map(event => ({
         name: event[0],
         value: event[1]
-    })).filter(event => event.value !== 'r3ni');;
+    })).filter(event => event.value !== 'r3ni');//removes multiblind 
 
 export default {
     data: new SlashCommandBuilder()
         .setName('scramble')
         .setDescription('Scramble!')
         .addStringOption(option => option.setName('event')
-            .setDescription('Which Event?')
+            .setDescription('Select a WCA Event')
             .setRequired(true)
             .addChoices(...eventChoices)
         ),
@@ -28,7 +30,7 @@ export default {
         const eventID: string | null = interaction.options.getString('event');
         if (!eventID) { interaction.editReply("No event received"); return; }
 
-        const eventInfo: [string, string, number] | undefined = wcaEvents.find(event => event[1] === eventID);
+        const eventInfo: CstimerEvent | undefined = wcaEvents.find(event => event[1] === eventID);
         if (!eventInfo) { interaction.editReply("Event not supported"); return; }
 
         // generate scramble
@@ -45,7 +47,7 @@ export default {
         const attachment = new AttachmentBuilder(pngBuffer, { name: 'scramble-image.png' });
 
         const scrambleEmbed = new EmbedBuilder()
-	        .setColor(22851)
+	        .setColor(davisGold)
             .addFields({ name: `${eventInfo[0]} Scramble`, value: scramble})
             .setImage(`attachment://${attachment.name}`)
 

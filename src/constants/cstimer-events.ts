@@ -1,4 +1,6 @@
-const cstimerEvents: [string, [string, string, number][]][]  = [
+import { CstimerEvent } from "../custom-types";
+
+const cstimerEvents: [string, CstimerEvent[]][]  = [
 	['WCA', [
 		['3x3x3', "333", 0],
 		['2x2x2', "222so", 0],
