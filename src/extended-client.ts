@@ -3,7 +3,7 @@ import path from 'path';
 import { commandData } from './utilities.js';
 import fs from 'node:fs';
 import { _src_dirname } from './client.js';
-
+import os from 'os'
 class extendedClient extends Client<true> {
     public commands: Collection<string, commandData>;
     public constructor(client: Client) {
@@ -19,7 +19,10 @@ class extendedClient extends Client<true> {
             .filter(file => file.endsWith('.js'));
 
         for (const file of commandFiles) {
-            const filePath = path.join(commandsPath, file);
+            const filePath = (os.type() === "Windows_NT") ?
+                'file://' + path.join(commandsPath, file):
+                path.join(commandsPath, file)
+
             const command = (await import(filePath)).default as commandData;
             // Set a new item in the Collection with the key as the command name and the value as the exported module
             if (command !== undefined && command !== null) {
